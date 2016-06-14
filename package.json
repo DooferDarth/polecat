@@ -1,17 +1,26 @@
 {
   "name": "polecat",
   "description": "A simple browser-based text RP server/client.",
-  "version": "0.1.0",
+  "version": "0.1.0-alpha.0",
   "homepage": "",
   "main": "src/",
   "keywords": [
     "feathers"
   ],
   "license": "MIT",
-  "repository": {},
-  "author": {},
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/chaos7theory/polecat.git"
+  },
+  "author": {
+      "name": "Christopher Philabaum",
+      "email": "christopher@philabaum.me",
+      "url": "https://philabaum.me"
+  },
   "contributors": [],
-  "bugs": {},
+  "bugs": {
+      "url": "https://github.com/chaos7theory/polecat/issues"
+  },
   "engines": {
     "node": ">= 6.0.0"
   },
