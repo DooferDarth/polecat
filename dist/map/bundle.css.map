@@ -1,0 +1,1 @@
+{"version":3,"sources":["scss/main.scss"],"names":[],"mappings":"AAAA,IAAI,CAAC;EACD,SAAS,EAAE,IAAK,GACnB","file":"bundle.css","sourcesContent":["html {\n    font-size: 22px;\n}\n"],"sourceRoot":"/source/"}

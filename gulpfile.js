@@ -53,13 +53,12 @@ gulp.task('compile:sass', () => {
         .pipe(sourcemaps.init())
             .pipe(sass().on('error', sass.logError))
             .pipe(concat(config.css.bundle))
-        .pipe(sourcemaps.write('map'))
-        .pipe(gulp.dest('./dist/'))
+        .pipe(sourcemaps.write(config.map))
+        .pipe(gulp.dest(config.dest))
         .pipe(notify({
             message: 'Generated file: <%= file.relative %>'
         }))
-        .pipe(sassTimer) // Output time timing of the file creation
-
+        .pipe(sassTimer); // Output time timing of the file creation
 });
 
 gulp.task('js', () => {

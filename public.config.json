@@ -29,8 +29,8 @@
             "./public/**/*.css"
         ],
         "watch": [
-            "./public/scss/**/*.scss",
-            "./public/css/**/*.css"
+            "./public/**/*.scss",
+            "./public/**/*.css"
         ],
         "bundle": "bundle.css",
         "lib": [
