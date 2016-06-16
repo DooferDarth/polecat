@@ -16,6 +16,8 @@ var watchify = require('watchify'); // Watchify for source changes
 var objMerge = require('utils-merge'); // Object merge tool
 var duration = require('gulp-duration'); // Time aspects of your gulp process
 
+var jshint = require('gulp-jshint');
+var mocha = require('gulp-mocha');
 var uglify = require('gulp-uglify');
 var sass = require('gulp-sass');
 var concat = require('gulp-concat');
@@ -36,6 +38,16 @@ var config = {
         watch: [ './public/scss/**/*.scss', './public/css/**/*.css' ],
         outputDir: './dist',
         outputFile: 'bundle.css'
+    },
+    lib: {
+        src: [
+            'node_modules/bootstrap/dist/css/bootstrap.min.css',
+            'node_modules/bootstrap/dist/css/bootstrap-theme.min.css',
+            'node_modules/bootstrap/dist/fonts/*',
+            'node_modules/bootstrap/dist/js/bootstrap.min.js',
+            'node_modules/jquery/dist/jquery.min.js'
+        ],
+        dest: './dist/lib'
     }
 };
 
@@ -89,6 +101,7 @@ function buildSass() {
         // .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
         .pipe(concat(config.css.outputFile))
+        // .pipe(sourcemaps.write('map'))
         .pipe(gulp.dest(config.css.outputDir))
         .pipe(notify({
             message: 'Generated file: <%= file.relative %>'
@@ -97,7 +110,6 @@ function buildSass() {
             gutil.log(chalk.yellow(`${config.css.outputDir}/${path.basename(details.name)}': ${details.stats.originalSize}`));
             gutil.log(chalk.green(`${config.css.outputDir}/${path.basename(details.name, '.css')}.min${path.extname(details.name)}: ${details.stats.minifiedSize}`));
         }))
-        // .pipe(sourcemaps.write('map'))
         .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest(config.css.outputDir))
         .pipe(notify({
@@ -109,12 +121,33 @@ function buildSass() {
 
 gulp.task('sass', buildSass);
 
+gulp.task('lib', () => {
+    return gulp.src(config.lib.src)
+        .pipe(gulp.dest(config.lib.dest));
+});
 
 gulp.task('js', () => {
     var bundler = browserify(config.js.src, { debug: true }) // Browserify
         .transform(babelify, {presets: ['es2015', 'react']}); // Babel tranforms
 
     bundle(bundler);
+});
+
+gulp.task('jshint:src', () => {
+    return gulp.src('./src/**/*.js')
+        .pipe(jshint())
+        .pipe(jshint.reporter('jshint-stylish'));
+});
+
+gulp.task('jshint:public', () => {
+    return gulp.src(config.js.src)
+        .pipe(jshint({ linter: require('jshint-jsx').JSXHINT }))
+        .pipe(jshint.reporter('jshint-stylish'));
+});
+
+gulp.task('test', () => {
+    return gulp.src('./test/**/*.test.js')
+        .pipe(mocha());
 });
 
 // Gulp task for watching file changes
@@ -133,6 +166,8 @@ gulp.task('watch', () => {
         bundle(bundler); // Re-run bundle on source updates
     });
 
+    gulp.watch('./src/**/*.js', [ 'jshint:src', 'test' ]);
+    gulp.watch(config.js.src, [ 'jshint:public' ]);
 
     gulp.watch(config.css.watch, ['sass'])
 });

@@ -1,4 +1,4 @@
-// main.js
+// main.jsx
 var React = require('react');
 var ReactDOM = require('react-dom');
 
@@ -7,5 +7,4 @@ ReactDOM.render(
   document.getElementById('example')
 );
 
-console.log("hello");
-5 + 2
+(() => console.log("Hello"))();
