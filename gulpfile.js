@@ -23,40 +23,18 @@ var sass = require('gulp-sass');
 var concat = require('gulp-concat');
 var merge = require('merge-stream');
 var cleanCSS = require('gulp-clean-css');
+
 var path = require('path');
 
 // Configuration for Gulp
-var config = {
-    js: {
-        src: './public/js/main.jsx',
-        watch: ['./public/js/**/*.jsx', './public/js/**/*.js'],
-        outputDir: './dist',
-        outputFile: 'bundle.js'
-    },
-    css: {
-        src: [ './public/**/*.scss', './public/**/*.css' ],
-        watch: [ './public/scss/**/*.scss', './public/css/**/*.css' ],
-        outputDir: './dist',
-        outputFile: 'bundle.css'
-    },
-    lib: {
-        src: [
-            'node_modules/bootstrap/dist/css/bootstrap.min.css',
-            'node_modules/bootstrap/dist/css/bootstrap-theme.min.css',
-            'node_modules/bootstrap/dist/fonts/*',
-            'node_modules/bootstrap/dist/js/bootstrap.min.js',
-            'node_modules/jquery/dist/jquery.min.js'
-        ],
-        dest: './dist/lib'
-    }
-};
+var config = require('./public.config.json');
 
-// Error reporting function
+// Error reporting function for browserify
 function mapError(err) {
     if (err.fileName) {
         // Regular error
         gutil.log(chalk.red(err.name)
-            + ': ' + chalk.yellow(err.fileName.replace(__dirname + '/src/js/', ''))
+            + ': ' + chalk.yellow(err.fileName.replace(__dirname + '/public/js/', ''))
             + ': ' + 'Line ' + chalk.magenta(err.lineNumber)
             + ' & ' + 'Column ' + chalk.magenta(err.columnNumber || err.column)
             + ': ' + chalk.blue(err.description));
@@ -68,69 +46,136 @@ function mapError(err) {
     }
 }
 
-// Completes the final file outputs
-function bundle(bundler) {
-    var bundleTimer = duration('Javascript bundle time');
+gulp.task('compile:sass', () => {
+    var sassTimer = duration('Sass compile');
 
-    bundler
+    return gulp.src(config.css.src)
+        .pipe(sourcemaps.init())
+            .pipe(sass().on('error', sass.logError))
+            .pipe(concat(config.css.bundle))
+        .pipe(sourcemaps.write('map'))
+        .pipe(gulp.dest('./dist/'))
+        .pipe(notify({
+            message: 'Generated file: <%= file.relative %>'
+        }))
+        .pipe(sassTimer) // Output time timing of the file creation
+
+});
+
+gulp.task('js', () => {
+    var bundleTimer = duration('Browserify + babel bundle');
+
+    return browserify(config.js.src, { debug: true }) // Browserify
+        .transform(babelify) // Babel tranforms
         .bundle()
         .on('error', mapError) // Map error reporting
         .pipe(source('main.jsx')) // Set source name
         .pipe(buffer()) // Convert to gulp pipeline
-        .pipe(rename(config.js.outputFile)) // Rename the output file
-        .pipe(gulp.dest(config.js.outputDir))
-        .pipe(notify({
-            message: 'Generated file: <%= file.relative %>',
-        })) // Output the file being created
-        // .pipe(sourcemaps.init({ loadMaps: true })) // Extract the inline sourcemaps
-        .pipe(uglify())
-        .pipe(rename( { suffix: '.min' }))
-        // .pipe(sourcemaps.write('map')) // Set folder for sourcemaps to output to
-        .pipe(gulp.dest(config.js.outputDir)) // Set the output folder
+        .pipe(rename(config.js.bundle)) // Rename the output file
+        .pipe(sourcemaps.init({ loadMaps: true })) // Extract the inline sourcemaps
+        .pipe(sourcemaps.write(config.map)) // Set folder for sourcemaps to output to
+        .pipe(gulp.dest(config.dest)) // Set the output folder
         .pipe(notify({
             message: 'Generated file: <%= file.relative %>',
         })) // Output the file being created
         .pipe(bundleTimer) // Output time timing of the file creation
         .pipe(livereload()); // Reload the view in the browser
-}
-
-function buildSass() {
-    var sassTimer = duration('Sass compile, bundle, and minify');
-
-    return gulp.src(config.css.src, { base: 'public' })
-        // .pipe(sourcemaps.init())
-        .pipe(sass().on('error', sass.logError))
-        .pipe(concat(config.css.outputFile))
-        // .pipe(sourcemaps.write('map'))
-        .pipe(gulp.dest(config.css.outputDir))
-        .pipe(notify({
-            message: 'Generated file: <%= file.relative %>'
-        }))
-        .pipe(cleanCSS({ debug: true }, (details) => {
-            gutil.log(chalk.yellow(`${config.css.outputDir}/${path.basename(details.name)}': ${details.stats.originalSize}`));
-            gutil.log(chalk.green(`${config.css.outputDir}/${path.basename(details.name, '.css')}.min${path.extname(details.name)}: ${details.stats.minifiedSize}`));
-        }))
-        .pipe(rename({ suffix: '.min' }))
-        .pipe(gulp.dest(config.css.outputDir))
-        .pipe(notify({
-            message: 'Generated file: <%= file.relative %>'
-        }))
-        .pipe(sassTimer)// Output time timing of the file creation
-        .pipe(livereload()); // Reload the view in the browser
-}
-
-gulp.task('sass', buildSass);
-
-gulp.task('lib', () => {
-    return gulp.src(config.lib.src)
-        .pipe(gulp.dest(config.lib.dest));
 });
 
-gulp.task('js', () => {
-    var bundler = browserify(config.js.src, { debug: true }) // Browserify
-        .transform(babelify, {presets: ['es2015', 'react']}); // Babel tranforms
+gulp.task('html', () => {
+    var htmlTimer = duration('HTML copy');
 
-    bundle(bundler);
+    return gulp.src(config.html.src)
+        .pipe(gulp.dest(config.dest))
+        .pipe(notify({
+            message: 'Generated file: <%= file.relative %>'
+        }))
+        .pipe(htmlTimer)
+        .pipe(livereload()); // Reload the view in the browser
+});
+
+gulp.task('clean:css', ['compile:sass'], () => {
+    var cleanTimer = duration('CSS minify');
+    var src = path.join(config.dest, config.css.bundle);
+
+    return gulp.src(src)
+        .pipe(cleanCSS({ debug: true }, (details) => {
+            gutil.log(chalk.yellow(`${src}: ${details.stats.originalSize}`));
+            gutil.log(chalk.green(`${src.basename}.min${src.extname}: ${details.stats.minifiedSize}`));
+        }))
+        .pipe(rename({ suffix: '.min' }))
+        .pipe(gulp.dest(config.dest))
+        .pipe(notify({
+            message: 'Generated file: <%= file.relative %>'
+        }))
+        .pipe(cleanTimer)
+        .pipe(livereload()); // Reload the view in the browser
+});
+
+gulp.task('clean:js', ['js'], () => {
+    var cleanTimer = duration('JS minify');
+
+    return gulp.src(path.join(config.dest, config.js.bundle))
+        .pipe(uglify())
+        .pipe(rename({ suffix: '.min' }))
+        .pipe(gulp.dest('./dist/'))
+        .pipe(notify({
+            message: 'Generated file: <%= file.relative %>'
+        }))
+        .pipe(cleanTimer)
+        .pipe(livereload()); // Reload the view in the browser
+});
+
+gulp.task('clean', [ 'clean:js', 'clean:css']);
+
+gulp.task('lib:css', () => {
+    var libTimer = duration('Lib CSS copy');
+
+    return gulp.src(config.css.lib)
+        .pipe(gulp.dest(path.join(config.dest, config.lib, 'css')))
+        .pipe(notify({
+            message: 'Copied file: <%= file.relative %>'
+        })) // Output the file being created
+        .pipe(libTimer)
+        .pipe(livereload()); // Reload the view in the browser
+});
+
+gulp.task('lib:js', () => {
+    var libTimer = duration('Lib JS copy');
+
+    return gulp.src(config.js.lib)
+        .pipe(gulp.dest(path.join(config.dest, config.lib, 'js')))
+        .pipe(notify({
+            message: 'Copied file: <%= file.relative %>'
+        })) // Output the file being created
+        .pipe(libTimer)
+        .pipe(livereload()); // Reload the view in the browser
+});
+
+gulp.task('lib:fonts', () => {
+    var libTimer = duration('Lib fonts copy');
+
+    return gulp.src(config.fonts.lib)
+        .pipe(gulp.dest(path.join(config.dest, config.lib, 'fonts')))
+        .pipe(notify({
+            message: 'Copied file: <%= file.relative %>'
+        })) // Output the file being created
+        .pipe(libTimer)
+        .pipe(livereload()); // Reload the view in the browser
+});
+
+gulp.task('lib', [ 'lib:js', 'lib:css', 'lib:fonts' ]);
+
+gulp.task('assets', () => {
+    var assetsTimer = duration('Assets copy');
+
+    return gulp.src(config.assets.src)
+        .pipe(gulp.dest(path.join(config.dest, 'assets')))
+        .pipe(notify({
+            message: 'Copied file: <%= file.relative %>'
+        })) // Output the file being created
+        .pipe(assetsTimer)
+        .pipe(livereload()); // Reload the view in the browser
 });
 
 gulp.task('jshint:src', () => {
@@ -145,29 +190,37 @@ gulp.task('jshint:public', () => {
         .pipe(jshint.reporter('jshint-stylish'));
 });
 
+gulp.task('jshint:test', () => {
+    return gulp.src('./test/**/*.js')
+        .pipe(jshint())
+        .pipe(jshint.reporter('jshint-stylish'));
+});
+
+gulp.task('jshint', [ 'jshint:src', 'jshint:public', 'jshint:test' ]);
+
 gulp.task('test', () => {
     return gulp.src('./test/**/*.test.js')
-        .pipe(mocha());
+        .pipe(mocha())
+        .pipe(notify({
+            message: 'Generated file: <%= file.relative %>'
+        })); // Output the file being created
 });
 
 // Gulp task for watching file changes
 gulp.task('watch', () => {
     livereload.listen(); // Start livereload server
 
-    var args = objMerge(watchify.args, { debug: true }); // Merge in default watchify args with browserify arguments
-
-    var bundler = browserify(config.js.src, args) // Browserify
-        .plugin(watchify, {ignoreWatch: ['**/node_modules/**', '**/bower_components/**']}) // Watchify to watch source file changes
-        .transform(babelify, {presets: ['es2015', 'react']}); // Babel tranforms
-
-    bundle(bundler); // Run the bundle the first time (required for Watchify to kick in)
-
-    bundler.on('update', function() {
-        bundle(bundler); // Re-run bundle on source updates
-    });
-
     gulp.watch('./src/**/*.js', [ 'jshint:src', 'test' ]);
-    gulp.watch(config.js.src, [ 'jshint:public' ]);
+    gulp.watch(config.js.watch, [ 'jshint:public', 'clean:js' ]);
+    gulp.watch('./test/**/*.js', [ 'jshint:test', 'test' ]);
 
-    gulp.watch(config.css.watch, ['sass'])
+    gulp.watch(config.js.lib, [ 'lib:js' ]);
+    gulp.watch(config.css.lib, [ 'lib:css' ]);
+    gulp.watch(config.fonts.lib, [ 'lib:fonts' ]);
+    gulp.watch(config.html.watch, [ 'html' ]);
+    gulp.watch(config.assets.watch, [ 'assets' ]);
+
+    gulp.watch(config.css.watch, [ 'clean:css' ])
 });
+
+gulp.task('default', [ 'jshint', 'clean', 'lib', 'html', 'assets', 'watch' ]);
