@@ -1,12 +1,13 @@
 {
-  "host": "localhost",
-  "port": 3030,
-  "nedb": "../data/",
-  "public": "../public/",
-  "auth": {
-    "token": {
-      "secret": "DOVVekhaqPtqmlUtxLcN8w7kcEbzvvSUbZ08Tz5dUL468k68e8+RZsGEJBHGeWcSKQGOaoBsKmMw+D+/Vz5iBg=="
-    },
-    "local": {}
-  }
+    "host": "localhost",
+    "port": 3030,
+    "nedb": "../data/",
+    "public": "../dist/",
+    "auth": {
+        "token": {
+            "secret": "DOVVekhaqPtqmlUtxLcN8w7kcEbzvvSUbZ08Tz5dUL468k68e8+RZsGEJBHGeWcSKQGOaoBsKmMw+D+/Vz5iBg=="
+        },
+        "local": {},
+        "successRedirect": "/chat.html"
+    }
 }

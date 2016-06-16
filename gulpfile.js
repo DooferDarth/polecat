@@ -28,6 +28,7 @@ var path = require('path');
 
 // Configuration for Gulp
 var config = require('./public.config.json');
+var feathersConfig = require('./config/default.json');
 
 // Error reporting function for browserify
 function mapError(err) {
@@ -222,4 +223,6 @@ gulp.task('watch', () => {
     gulp.watch(config.css.watch, [ 'clean:css' ])
 });
 
-gulp.task('default', [ 'jshint', 'clean', 'lib', 'html', 'assets', 'watch' ]);
+gulp.task('build', [ 'clean', 'lib', 'html', 'assets' ]);
+
+gulp.task('default', [ 'jshint', 'build', 'watch' ]);

@@ -25,10 +25,12 @@
     "node": ">= 6.0.0"
   },
   "scripts": {
-    "test": "npm run jshint && npm run mocha",
-    "jshint": "jshint src/. test/. --config",
+    "test": "gulp jshint test",
+    "jshint": "gulp jshint",
     "start": "node src/",
-    "mocha": "mocha test/ --recursive"
+    "mocha": "gulp test",
+    "build": "gulp build",
+    "watch": "gulp watch"
   },
   "dependencies": {
     "babel-polyfill": "^6.9.1",
@@ -44,12 +46,13 @@
     "feathers-nedb": "^2.2.3",
     "feathers-rest": "^1.3.0",
     "feathers-socketio": "^1.4.0",
-    "jquery": "^3.0.0",
+    "jquery": "^2.2.4",
     "nedb": "^1.8.0",
     "passport": "^0.3.2",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "serve-favicon": "^2.3.0",
+    "socket.io-client": "^1.4.6",
     "winston": "^2.2.0"
   },
   "devDependencies": {
