@@ -6,3 +6,6 @@ ReactDOM.render(
   <h1>Hello, world!</h1>,
   document.getElementById('example')
 );
+
+console.log("hello");
+5 + 2
