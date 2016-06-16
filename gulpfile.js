@@ -16,6 +16,7 @@ var watchify = require('watchify'); // Watchify for source changes
 var objMerge = require('utils-merge'); // Object merge tool
 var duration = require('gulp-duration'); // Time aspects of your gulp process
 
+var uglify = require('gulp-uglify');
 var sass = require('gulp-sass');
 var concat = require('gulp-concat');
 var merge = require('merge-stream');
@@ -34,8 +35,7 @@ var config = {
         src: [ './public/**/*.scss', './public/**/*.css' ],
         watch: [ './public/scss/**/*.scss', './public/css/**/*.css' ],
         outputDir: './dist',
-        outputFile: 'bundle.css',
-        outputMinFile: 'bundle.min.css'
+        outputFile: 'bundle.css'
     }
 };
 
@@ -66,8 +66,14 @@ function bundle(bundler) {
         .pipe(source('main.jsx')) // Set source name
         .pipe(buffer()) // Convert to gulp pipeline
         .pipe(rename(config.js.outputFile)) // Rename the output file
-        .pipe(sourcemaps.init({ loadMaps: true })) // Extract the inline sourcemaps
-        .pipe(sourcemaps.write('map')) // Set folder for sourcemaps to output to
+        .pipe(gulp.dest(config.js.outputDir))
+        .pipe(notify({
+            message: 'Generated file: <%= file.relative %>',
+        })) // Output the file being created
+        // .pipe(sourcemaps.init({ loadMaps: true })) // Extract the inline sourcemaps
+        .pipe(uglify())
+        .pipe(rename( { suffix: '.min' }))
+        // .pipe(sourcemaps.write('map')) // Set folder for sourcemaps to output to
         .pipe(gulp.dest(config.js.outputDir)) // Set the output folder
         .pipe(notify({
             message: 'Generated file: <%= file.relative %>',
