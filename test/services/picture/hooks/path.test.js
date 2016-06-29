@@ -1,9 +1,9 @@
 'use strict';
 
 const assert = require('assert');
-const gravatar = require('../../../../src\services\user\hooks\gravatar.js');
+const path = require('../../../../src\services\picture\hooks\path.js');
 
-describe('user gravatar hook', function() {
+describe('picture path hook', function() {
   it('hook can be used', function() {
     const mockHook = {
       type: 'before',
@@ -13,8 +13,8 @@ describe('user gravatar hook', function() {
       data: {}
     };
 
-    gravatar()(mockHook);
+    path()(mockHook);
 
-    assert.ok(mockHook.gravatar);
+    assert.ok(mockHook.path);
   });
 });

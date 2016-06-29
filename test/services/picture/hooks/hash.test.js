@@ -1,9 +1,9 @@
 'use strict';
 
 const assert = require('assert');
-const process = require('../../../../src\services\message\hooks\process.js');
+const hash = require('../../../../src\services\picture\hooks\hash.js');
 
-describe('message process hook', function() {
+describe('picture hash hook', function() {
   it('hook can be used', function() {
     const mockHook = {
       type: 'before',
@@ -13,8 +13,8 @@ describe('message process hook', function() {
       data: {}
     };
 
-    process()(mockHook);
+    hash()(mockHook);
 
-    assert.ok(mockHook.process);
+    assert.ok(mockHook.hash);
   });
 });
