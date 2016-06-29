@@ -32,4 +32,7 @@ module.exports = function () {
 
     // Set up our after hooks
     userService.after(hooks.after);
+
+    // Filter all events to only authenticated users
+    userService.filter((data, connection, hook) => !connection.user ? false : data);
 };
