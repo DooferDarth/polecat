@@ -23,11 +23,18 @@ app.use(compress())
     .use(cors())
     .use(favicon(path.join(app.get('public'), 'assets', 'favicon.ico')))
     .use('/', serveStatic(app.get('public')))
-    .use(bodyParser.json())
+    .use(bodyParser.json({ limit: '120mb' }))
     .use(bodyParser.urlencoded({extended: true}))
     .configure(hooks())
     .configure(rest())
-    .configure(socketio())
+    .configure(socketio(io => {
+        io.on('connection', socket => {
+            console.log(`${JSON.stringify(socket.id)} has connected`);
+            // socket.emit('session', {
+            //     users: app.service('users').find()
+            // })
+        })
+    }))
     .configure(services)
     .configure(middleware);
 

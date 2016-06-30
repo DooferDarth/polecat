@@ -1,12 +1,13 @@
 {
-  "host": "polecat-app.feathersjs.com",
-  "port": 80,
-  "nedb": "NEDB_BASE_PATH",
-  "public": "../dist/",
-  "auth": {
-    "token": {
-      "secret": "FEATHERS_AUTH_SECRET"
-    },
-    "local": {}
-  }
+    "host": "localhost",
+    "port": 80,
+    "nedb": "NEDB_BASE_PATH",
+    "images": "IMAGEs_BASE_PATH",
+    "public": "../dist/",
+    "auth": {
+        "token": {
+            "secret": "FEATHERS_AUTH_SECRET"
+        },
+        "local": {}
+    }
 }
