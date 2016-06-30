@@ -46,6 +46,16 @@ For more information on all the things you can do with Feathers visit [docs.feat
 
 ## Changelog
 
+__0.2.0__
+
+- Add the following services:
+    * /users
+    * /characters
+    * /derivatives
+    * /pictures
+    * /messages
+- Add event filters skeleton
+
 __0.1.0__
 
 - Initial release
