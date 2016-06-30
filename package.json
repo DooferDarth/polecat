@@ -1,7 +1,7 @@
 {
   "name": "polecat",
   "description": "A simple browser-based text RP server/client.",
-  "version": "0.2.0-alpha.0",
+  "version": "0.2.0",
   "homepage": "",
   "main": "src/",
   "keywords": [
