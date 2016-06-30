@@ -16,8 +16,7 @@ exports.before = {
     get: [
         auth.verifyToken(),
         auth.populateUser(),
-        auth.restrictToAuthenticated(),
-        auth.restrictToOwner({ ownerField: 'id' })
+        auth.restrictToAuthenticated()
     ],
     create: [
         globalHooks.required({ model: model }),
@@ -28,21 +27,21 @@ exports.before = {
         auth.verifyToken(),
         auth.populateUser(),
         auth.restrictToAuthenticated(),
-        auth.restrictToOwner({ ownerField: 'id' }),
+        auth.restrictToOwner({ ownerField: '_id' }),
         globalHooks.validate({ model: model })
     ],
     patch: [
         auth.verifyToken(),
         auth.populateUser(),
         auth.restrictToAuthenticated(),
-        auth.restrictToOwner({ ownerField: 'id' }),
+        auth.restrictToOwner({ ownerField: '_id' }),
         globalHooks.validate({ model: model })
     ],
     remove: [
         auth.verifyToken(),
         auth.populateUser(),
         auth.restrictToAuthenticated(),
-        auth.restrictToOwner({ ownerField: 'id' })
+        auth.restrictToOwner({ ownerField: '_id' })
     ]
 };
 

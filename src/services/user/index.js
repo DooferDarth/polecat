@@ -4,6 +4,7 @@ const path = require('path');
 const NeDB = require('nedb');
 const service = require('feathers-nedb');
 const hooks = require('./hooks');
+const filters = require('./filters');
 
 module.exports = function () {
     const app = this;
@@ -33,6 +34,5 @@ module.exports = function () {
     // Set up our after hooks
     userService.after(hooks.after);
 
-    // Filter all events to only authenticated users
-    userService.filter((data, connection, hook) => !connection.user ? false : data);
+    userService.filter(filters);
 };

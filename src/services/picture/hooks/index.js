@@ -64,8 +64,7 @@ exports.before = {
             fieldName: 'roles',
             ownerField: 'userId',
             owner: true
-        }),
-        remove()
+        })
     ]
 };
 
@@ -85,5 +84,9 @@ exports.after = {
     ],
     update: [],
     patch: [],
-    remove: []
+    remove: [
+        read(),
+        remove(),
+        hooks.remove('path')
+    ]
 };
