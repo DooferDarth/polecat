@@ -16,7 +16,7 @@ module.exports = () => {
 
     return hook => new Promise((resolve, reject) => {
         // Attempt to recursively make the images directory and all the path's subdirectories
-        mkdirp(path.join(hook.app.get('nedb'), hook.app.get('images'), path.dirname(hook.data.path)), err => {
+        mkdirp(path.join(hook.app.get('nedb'), path.dirname(hook.data.path)), err => {
             if(err) {
                 reject(err);
             }

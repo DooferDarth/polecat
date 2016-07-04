@@ -2,7 +2,6 @@
     "host": "localhost",
     "port": 80,
     "nedb": "NEDB_BASE_PATH",
-    "images": "IMAGEs_BASE_PATH",
     "public": "../dist/",
     "auth": {
         "token": {

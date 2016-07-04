@@ -16,6 +16,7 @@ const extensions = {
 
 // Used to determine how many subdirectories to use
 const depth = 2;
+const images = 'images';
 
 module.exports = () => {
     // options = Object.assign({}, defaults, options);
@@ -24,7 +25,7 @@ module.exports = () => {
         // Combine the path as 'images/hash[0]/hash[1]/.../hash[DEPTH]/hash.ext'
         // Use spread operator to separate the beginning characters of hash to subdirectories
         // Use subdirectories to avoid too many files under any one particular directory
-        hook.data.path = path.join(hook.app.get('images'), ...hook.data._id.substr(0, DEPTH), `${hook.data._id}.${extensions[hook.data.mimetype]}`);
+        hook.data.path = path.join(images, ...hook.data._id.substr(0, depth), `${hook.data._id}.${extensions[hook.data.mimetype]}`);
 
         return hook;
     };
