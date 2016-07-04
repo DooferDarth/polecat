@@ -3,6 +3,8 @@
 // derivative-model.js - A just a generic object literal model
 const validator = require('validator');
 
+const Picture = require('../picture/picture-model');
+
 const derivativeModel = {
     name: {
         type: String,
@@ -14,6 +16,16 @@ const derivativeModel = {
                 message: "Name cannot be empty."
             }
         ]
+    },
+    icon: {
+        type: Picture,
+        required: false,
+        prop: data => data.icon
+    },
+    full: {
+        type: Picture,
+        required: false,
+        prop: data => data.full
     },
     age: {
         type: Number,
