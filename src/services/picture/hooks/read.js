@@ -15,16 +15,32 @@ module.exports = () => {
 
     return hook => {
         return new Promise((resolve, reject) => {
-            fs.readFile(path.join(hook.app.get('nedb'), hook.result.path), (err, buffer) => {
-                if(err) {
-                    reject(err);
-                }
-                else {
-                    hook.result.raw = buffer.toString('base64');
+            if([ "find", "create", "remove" ].includes(hook.method) && Array.isArray(hook.result.data)) {
+                hook.result.data.forEach(picture => {
+                    fs.readFile(path.join(hook.app.get('nedb'), picture.path), (err, buffer) => {
+                        if(err) {
+                            reject(err);
+                        }
+                        else {
+                            picture.raw = buffer.toString('base64');
+                        }
+                    })
+                });
 
-                    resolve(hook);
-                }
-            })
+                resolve(hook);
+            }
+            else {
+                fs.readFile(path.join(hook.app.get('nedb'), hook.result.path), (err, buffer) => {
+                    if(err) {
+                        reject(err);
+                    }
+                    else {
+                        hook.result.raw = buffer.toString('base64');
+
+                        resolve(hook);
+                    }
+                });
+            }
         })
     };
 };
