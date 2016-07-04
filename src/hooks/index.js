@@ -15,16 +15,22 @@ const errors = require('feathers-errors');
 // };
 
 exports.validate = options => hook => {
+    if(!options.data) {
+        options.data = hook.data;
+    }
+    else {
+        options.data = hook.data[options.data];
+    }
     for(let prop in options.model) {
         if (options.model.hasOwnProperty(prop)) {
-            if (!options.model[prop].prop(hook.data)) {
+            if (!options.model[prop].prop(options.data)) {
                 continue;
             }
 
             for (var validator of options.model[prop].validator) {
-                if (!validator.validate(hook.data)) {
+                if (!validator.validate(options.data)) {
                     throw new errors.BadRequest('Validation Error', {
-                        data: hook.data,
+                        data: options.data,
                         message: validator.message
                     });
                 }
@@ -33,11 +39,17 @@ exports.validate = options => hook => {
     }
 };
 exports.required = options => hook => {
+    if(!options.data) {
+        options.data = hook.data;
+    }
+    else {
+        options.data = hook.data[options.data];
+    }
     for(let prop in options.model) {
         if (options.model.hasOwnProperty(prop)) {
-            if (options.model[prop].required && !options.model[prop].prop(hook.data)) {
+            if (options.model[prop].required && !options.model[prop].prop(options.data)) {
                 throw new errors.BadRequest('Missing Field', {
-                    data: hook.data,
+                    data: options.data,
                     message: `Data is missing required property '${prop}'`
                 });
             }
