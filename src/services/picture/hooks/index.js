@@ -30,6 +30,7 @@ exports.before = {
     find: [],
     get: [],
     create: [
+        hooks.disable('external'),
         globalHooks.required({ model: model }),
         globalHooks.validate({ model: model }),
         buffer(),
