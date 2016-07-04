@@ -10,6 +10,7 @@ const path = require('path');
 const rimraf = require('rimraf');
 
 // const defaults = {};
+const images = 'images';
 
 module.exports = () => {
     // options = Object.assign({}, defaults, options);
@@ -31,7 +32,7 @@ module.exports = () => {
             }
             // Else null, and delete all files and subdirectories under 'images'
             else {
-                rimraf(path.join(hook.app.get('nedb'), hook.app.get('images')), err => {
+                rimraf(path.join(hook.app.get('nedb'), images), err => {
                     if(err) {
                         reject(err);
                     }
