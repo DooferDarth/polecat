@@ -1,5 +1,7 @@
 'use strict';
 
+const pad = require('./pad');
+
 const remove = require('./remove');
 
 const path = require('./path');
@@ -46,13 +48,15 @@ exports.before = {
                     throw err;
                 }
             }),
-        path(),
-        resize(160, hook => hook.data.type === 'icon'),
+        pad(hook => !hook.result && hook.data.type === 'icon'),
+        resize(160, hook => !hook.result && hook.data.type === 'icon'),
         // resize(800, hook => !hook.data.type || hook.data.type === 'full'),
+        path(),
         write(),
         hooks.pluck('_id', 'path', 'type', 'mimetype'),
         auth.associateCurrentUser(),
-        globalHooks.createdAt()
+        globalHooks.createdAt(),
+        pad()
     ],
     update: [hooks.disable()],
     patch: [hooks.disable()],
