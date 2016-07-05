@@ -15,7 +15,7 @@ module.exports = () => {
 
         return derivativeService.create(Object.assign({}, hook.data, { charId: hook.data._id }))
             .then(data => {
-                hook.data = Object.assign({}, hook.data, { defaultId: data._id });
+                hook.data.defaultId = data._id;
 
                 return hook;
             })
