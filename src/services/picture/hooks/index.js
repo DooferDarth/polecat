@@ -56,8 +56,7 @@ exports.before = {
         write(),
         hooks.pluck('_id', 'path', 'type', 'mimetype'),
         auth.associateCurrentUser(),
-        globalHooks.createdAt(),
-        pad()
+        globalHooks.createdAt()
     ],
     update: [hooks.disable()],
     patch: [hooks.disable()],
