@@ -1,5 +1,7 @@
 'use strict';
 
+const createId = require('./create-id');
+
 const removeDerivatives = require('./remove-derivatives');
 
 const createInitialDerivative = require('./create-initial-derivative');
@@ -23,6 +25,7 @@ exports.before = {
         globalHooks.required({ model: model }),
         globalHooks.validate({ model: model }),
         auth.associateCurrentUser(),
+        createId(),
         createInitialDerivative(),
         hooks.pluck('_id', 'userId', 'defaultId'),
         globalHooks.createdAt(),
