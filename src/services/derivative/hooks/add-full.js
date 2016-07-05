@@ -19,7 +19,7 @@ module.exports = () => {
 
         return pictureService.create(Object.assign({}, hook.data.full, { type: "full" }))
             .then(data => {
-                hook.data.fullId = data.id;
+                hook.data.fullId = data._id;
 
                 return hook;
             });

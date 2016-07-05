@@ -19,7 +19,7 @@ module.exports = () => {
 
         return pictureService.create(Object.assign({}, hook.data.icon, { type: "icon" }))
             .then(data => {
-                hook.data.iconId = data.id;
+                hook.data.iconId = data._id;
 
                 return hook;
             });
