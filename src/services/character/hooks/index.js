@@ -1,5 +1,7 @@
 'use strict';
 
+const removeDerivatives = require('./remove-derivatives');
+
 const createInitialDerivative = require('./create-initial-derivative');
 
 const globalHooks = require('../../../hooks');
@@ -42,7 +44,8 @@ exports.before = {
             fieldName: 'roles',
             ownerField: 'userId',
             owner: true
-        })
+        }),
+        removeDerivatives()
     ]
 };
 
