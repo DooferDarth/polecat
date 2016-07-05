@@ -1,5 +1,7 @@
 'use strict';
 
+const returnSamePicture = require('./return-same-picture');
+
 const pad = require('./pad');
 
 const remove = require('./remove');
@@ -35,20 +37,7 @@ exports.before = {
         globalHooks.validate({ model: model }),
         buffer(),
         hash(),
-        hook => hook.app.service('pictures').get(hook.data._id)
-            .then(data => {
-                hook.result = data;
-
-                return hook;
-            })
-            .catch(err => {
-                if (err.code === 404) {
-                    return hook;
-                }
-                else {
-                    throw err;
-                }
-            }),
+        returnSamePicture(),
         pad(hook => !hook.result && hook.data.type === 'icon'),
         resize(160, hook => !hook.result && hook.data.type === 'icon'),
         // resize(800, hook => !hook.data.type || hook.data.type === 'full'),
