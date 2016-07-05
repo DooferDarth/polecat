@@ -17,6 +17,21 @@ const derivativeModel = {
             }
         ]
     },
+    charId: {
+        type: String,
+        required: true,
+        prop: data => data.charId,
+        validator: [
+            {
+                validate: data => !validator.isNull(data.charId),
+                message: "Character Id cannot be null."
+            },
+            {
+                validate: data => !validator.isHexadecimal(data.charId),
+                message: "Character Id cannot be null."
+            }
+        ]
+    },
     icon: {
         type: Picture,
         required: false,

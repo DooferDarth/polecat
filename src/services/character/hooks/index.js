@@ -24,7 +24,7 @@ exports.before = {
         globalHooks.validate({ model: model }),
         auth.associateCurrentUser(),
         createInitialDerivative(),
-        hooks.pluck('_id', 'userId', 'defaultId', 'derivativeIds'),
+        hooks.pluck('_id', 'userId', 'defaultId'),
         globalHooks.createdAt(),
         globalHooks.modifiedAt()
     ],

@@ -13,9 +13,9 @@ module.exports = () => {
     return hook => {
         const derivativeService = hook.app.service('derivatives');
 
-        return derivativeService.create(hook.data)
+        return derivativeService.create(Object.assign({}, hook.data, { charId: hook.data._id }))
             .then(data => {
-                hook.data = Object.assign({}, hook.data, { defaultId: data._id, derivativeIds: [ data._id ] });
+                hook.data = Object.assign({}, hook.data, { defaultId: data._id });
 
                 return hook;
             })
