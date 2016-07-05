@@ -20,11 +20,7 @@ exports.before = {
     get: [],
     create: [
         globalHooks.required({ model: model }),
-        globalHooks.required({ data: "icon", model: pictureModel }),
-        globalHooks.required({ data: "full", model: pictureModel }),
         globalHooks.validate({ model: model }),
-        globalHooks.validate({ data: "icon", model: pictureModel }),
-        globalHooks.validate({ data: "full", model: pictureModel }),
         addIcon(),
         addFull(),
         hooks.remove('full', 'icon'),
@@ -35,8 +31,6 @@ exports.before = {
     update: [
         auth.restrictToOwner({ ownerField: 'userId' }),
         globalHooks.validate({ model: model }),
-        globalHooks.validate({ data: "icon", model: pictureModel }),
-        globalHooks.validate({ data: "full", model: pictureModel }),
         addIcon(),
         addFull(),
         hooks.remove('full', 'icon'),
@@ -45,8 +39,6 @@ exports.before = {
     patch: [
         auth.restrictToOwner({ ownerField: 'userId' }),
         globalHooks.validate({ model: model }),
-        globalHooks.validate({ data: "icon", model: pictureModel }),
-        globalHooks.validate({ data: "full", model: pictureModel }),
         addIcon(),
         addFull(),
         hooks.remove('full', 'icon'),
