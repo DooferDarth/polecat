@@ -17,6 +17,7 @@ module.exports = () => {
         const characterService = hook.app.service('characters');
 
         let promise = () => new Promise((resolve, reject) => {
+            // Create 20 random cryptographically secure bytes
             crypto.randomBytes(20, (err, buffer) => {
                 if (err) {
                     reject(err);
@@ -25,9 +26,11 @@ module.exports = () => {
                 let id = buffer.toString('hex');
                 characterService.find({ query: { _id: id } })
                     .then(result => {
+                        // If total is non-zero
                         if (result.total) {
                             console.log(id);
 
+                            // Recursively resolve on a new promise of itself, to await for a new id.
                             return resolve(promise());
                         }
                         else {
