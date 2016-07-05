@@ -10,7 +10,7 @@
 module.exports = () => {
     // options = Object.assign({}, defaults, options);
 
-    return hook => this.get(hook.data._id)
+    return hook => hook.app.service('pictures').get(hook.data._id)
         .then(data => {
             hook.result = data;
 
