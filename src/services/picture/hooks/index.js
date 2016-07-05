@@ -1,17 +1,11 @@
 'use strict';
 
 const returnSamePicture = require('./return-same-picture');
-
 const pad = require('./pad');
-
 const remove = require('./remove');
-
 const path = require('./path');
-
 const buffer = require('./buffer');
-
 const hash = require('./hash');
-
 const read = require('./read');
 const write = require('./write');
 const resize = require('./resize');
