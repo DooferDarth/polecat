@@ -13,7 +13,7 @@ module.exports = () => {
     return hook => {
         const pictureService = hook.app.service('pictures');
 
-        if(!hook.icon) {
+        if(!hook.data.icon) {
             return hook;
         }
 

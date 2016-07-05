@@ -13,11 +13,11 @@ module.exports = () => {
     return hook => {
         const pictureService = hook.app.service('pictures');
 
-        if(!hook.full) {
+        if(!hook.data.full) {
             return hook;
         }
 
-        return pictureService.create(Object.assign({}, hook.full, { type: "full" }))
+        return pictureService.create(Object.assign({}, hook.data.full, { type: "full" }))
             .then(data => {
                 hook.data.fullId = data.id;
 
