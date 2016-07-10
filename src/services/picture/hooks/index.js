@@ -36,7 +36,7 @@ exports.before = {
         resize(160, hook => !hook.result && hook.data.type === 'icon'),
         // resize(800, hook => !hook.data.type || hook.data.type === 'full'),
         path(),
-        write(),
+        write(hook => !hook.result),
         hooks.pluck('_id', 'path', 'type', 'mimetype'),
         auth.associateCurrentUser(),
         globalHooks.createdAt()

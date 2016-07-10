@@ -11,10 +11,14 @@ const mkdirp = require('mkdirp');
 
 // const defaults = {};
 
-module.exports = () => {
+module.exports = test => {
     // options = Object.assign({}, defaults, options);
 
     return hook => new Promise((resolve, reject) => {
+        if (test && !test(hook)) {
+            resolve(hook);
+        }
+
         // Attempt to recursively make the images directory and all the path's subdirectories
         mkdirp(path.join(hook.app.get('nedb'), path.dirname(hook.data.path)), err => {
             if(err) {
