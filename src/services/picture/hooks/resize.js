@@ -5,7 +5,7 @@
 // Use this hook to manipulate incoming or outgoing data.
 // For more information on hooks see: http://docs.feathersjs.com/hooks/readme.html
 
-const resizer = require('lwip');
+const sharp = require('sharp');
 
 // const defaults = {};
 const encodings = {
@@ -22,12 +22,10 @@ module.exports = (size, test) => {
             resolve(hook);
         }
 
-        resizer.open(hook.data.buffer, encodings[hook.data.mimetype], (err, image) => {
-            let batch = image.batch();
-            if(image.width() > size && image.height() > size) {
-                batch.resize(size);
-            }
-            batch.toBuffer(encodings[hook.data.mimetype], (err, buffer) => {
+        sharp(hook.data.buffer)
+            .resize(size, size, { "fit": "inside" })
+            .toFormat(encodings[hook.data.mimetype])
+            .toBuffer((err, buffer, info) => {
                 if (err) {
                     reject(err);
                 }
@@ -37,6 +35,5 @@ module.exports = (size, test) => {
                     resolve(hook);
                 }
             });
-        })
     });
 };
