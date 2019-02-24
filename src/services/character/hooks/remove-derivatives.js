@@ -19,7 +19,7 @@ module.exports = () => {
         derivativeService.find({ query: { charId: hook.id }})
             .then(result => {
                 // Remove on all derivative ids, and wait until they've all finished.
-                Promise.all(Array.from(result, deriv => derivativeService.remove(deriv.id))
+                Promise.all(Array.from(result, deriv => derivativeService.remove(deriv._id))
                         .catch(err => {
                             // For all non-NotFound errors, reject with error.
                             if(err !== errors.NotFound) {

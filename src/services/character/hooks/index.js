@@ -58,9 +58,7 @@ exports.after = {
     get: [],
     create: [
         hooks.populate('derivatives', { service: 'derivatives', field: 'derivativeIds'}),
-        hooks.populate('default', { service: 'derivatives', field: 'defaultId'}),
-        // Remove redundant derivative owner data.
-        // hook => hook.result.derivatives.forEach(deriv => delete deriv.userId)
+        hooks.populate('default', { service: 'derivatives', field: 'defaultId'})
     ],
     update: [],
     patch: [],

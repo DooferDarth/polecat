@@ -13,13 +13,13 @@ module.exports = () => {
     return hook => {
         const pictureService = hook.app.service('pictures');
 
-        if(!hook.icon) {
+        if(!hook.data.icon) {
             return hook;
         }
 
         return pictureService.create(Object.assign({}, hook.data.icon, { type: "icon" }))
             .then(data => {
-                hook.data.iconId = data.id;
+                hook.data.iconId = data._id;
 
                 return hook;
             });
