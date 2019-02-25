@@ -1,98 +1,51 @@
 {
-  "name": "polecat",
-  "description": "A simple browser-based text RP server/client.",
-  "version": "0.2.0",
-  "homepage": "",
-  "main": "src/",
-  "keywords": [
-    "feathers"
-  ],
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/chaos7theory/polecat.git"
-  },
-  "author": {
-    "name": "Christopher Philabaum",
-    "email": "christopher@philabaum.me",
-    "url": "https://philabaum.me"
-  },
-  "contributors": [],
-  "bugs": {
-    "url": "https://github.com/chaos7theory/polecat/issues"
-  },
-  "engines": {
-    "node": ">= 6.0.0"
-  },
-  "scripts": {
-    "test": "gulp jshint test",
-    "jshint": "gulp jshint",
-    "start": "node src/",
-    "mocha": "gulp test",
-    "build": "gulp build",
-    "watch": "gulp watch"
-  },
-  "dependencies": {
-    "babel-polyfill": "^6.9.1",
-    "body-parser": "^1.15.1",
-    "bootstrap": "^3.3.6",
-    "compression": "^1.6.2",
-    "cors": "^2.7.1",
-    "feathers": "^2.0.1",
-    "feathers-authentication": "^0.7.7",
-    "feathers-configuration": "^0.3.0",
-    "feathers-errors": "^2.1.0",
-    "feathers-hooks": "^1.5.3",
-    "feathers-nedb": "^2.3.0",
-    "feathers-rest": "^1.3.0",
-    "feathers-socketio": "^1.4.0",
-    "image-type": "^2.1.0",
-    "jquery": "^2.2.4",
-    "mkdirp": "^0.5.1",
-    "nedb": "^1.8.0",
-    "passport": "^0.3.2",
-    "react": "^15.1.0",
-    "react-dom": "^15.1.0",
-    "rimraf": "^2.5.2",
-    "serve-favicon": "^2.3.0",
-    "sharp": "^0.21.3",
-    "socket.io-client": "^1.4.6",
-    "symbol-enum": "^4.0.2",
-    "validator": "^5.4.0",
-    "winston": "^2.2.0"
-  },
-  "devDependencies": {
-    "babel-core": "^6.9.1",
-    "babel-preset-es2015": "^6.9.0",
-    "babel-preset-react": "^6.5.0",
-    "babelify": "^7.3.0",
-    "browserify": "^13.0.1",
-    "chalk": "^1.1.3",
-    "gulp": "^3.9.1",
-    "gulp-clean-css": "^2.0.10",
-    "gulp-concat": "^2.6.0",
-    "gulp-duration": "0.0.0",
-    "gulp-jshint": "^2.0.1",
-    "gulp-livereload": "^3.8.1",
-    "gulp-mocha": "^2.2.0",
-    "gulp-notify": "^2.2.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-sass": "^2.3.2",
-    "gulp-sourcemaps": "^1.6.0",
-    "gulp-uglify": "^1.5.3",
-    "gulp-util": "^3.0.7",
-    "install": "^0.8.1",
-    "jshint": "^2.9.2",
-    "jshint-jsx": "^0.5.0",
-    "jshint-stylish": "^2.2.0",
-    "merge-stream": "^1.0.0",
-    "mocha": "^2.4.5",
-    "npm": "^3.9.5",
-    "request": "^2.72.0",
-    "semver": "^5.2.0",
-    "utils-merge": "^1.0.0",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.7.0"
-  }
+    "name": "polecat",
+    "description": "A simple browser-based text RP server/client.",
+    "version": "0.2.0",
+    "homepage": "",
+    "main": "src",
+    "keywords": [
+        "feathers"
+    ],
+    "author": {
+        "name": "Christopher Robert Philabaum",
+        "email": "christopher@philabaum.me"
+    },
+    "contributors": [],
+    "bugs": {},
+    "directories": {
+        "lib": "src",
+        "test": "test/",
+        "config": "config/"
+    },
+    "engines": {
+        "node": "^10.0.0",
+        "npm": ">= 3.0.0"
+    },
+    "scripts": {
+        "test": "npm run eslint && NODE_ENV= npm run mocha",
+        "eslint": "eslint src/. test/. --config .eslintrc.json",
+        "dev": "nodemon src/",
+        "start": "node src/",
+        "mocha": "mocha test/ --recursive --exit"
+    },
+    "dependencies": {
+        "@feathersjs/configuration": "^2.0.6",
+        "@feathersjs/errors": "^3.3.6",
+        "@feathersjs/express": "^1.3.1",
+        "@feathersjs/feathers": "^3.3.1",
+        "@feathersjs/socketio": "^3.2.9",
+        "compression": "^1.7.3",
+        "cors": "^2.8.5",
+        "helmet": "^3.15.1",
+        "serve-favicon": "^2.5.0",
+        "winston": "^3.2.1"
+    },
+    "devDependencies": {
+        "eslint": "^5.14.1",
+        "mocha": "^5.2.0",
+        "nodemon": "^1.18.10",
+        "request": "^2.88.0",
+        "request-promise": "^4.2.4"
+    }
 }
