@@ -1,27 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+<head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="A FeathersJS server" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
 
-        <title>Welcome to Feathers</title>
+    <title>Polecat</title>
 
-        <!-- Assets -->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-
-        <!-- Lib CSS -->
-        <link rel="lib/css/bootstrap.min.js" type="text/css" />
-        <link rel="lib/css/bootstrap-theme.min.js" type="text/css" />
-
-        <!-- Lib JS -->
-        <script src="lib/js/jquery.min.js"></script>
-        <script src="lib/js/bootstrap.min.js"></script>
-
-        <!-- Main -->
-        <link rel="main.css" type="text/css" />
-        <script src="app.js"></script>
-    </head>
-
-    <body>
-    </body>
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="stylesheet" href="//unpkg.com/feathers-chat@4.0.0/public/base.css" />
+    <link rel="stylesheet" href="//unpkg.com/feathers-chat@4.0.0/public/chat.css" />
+</head>
+<body>
+<div id="app" class="flex flex-column"></div>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.js"></script>
+<script type="text/javascript" src="//unpkg.com/@feathersjs/client@^4.3.0/dist/feathers.js"></script>
+<script type="text/javascript" src="//unpkg.com/jwt-decode@^3.1.2/build/jwt-decode.js"></script>
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="client.js"></script>
+</body>
 </html>
