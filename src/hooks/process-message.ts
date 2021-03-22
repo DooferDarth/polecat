@@ -16,7 +16,7 @@ export default (options = {}): Hook => {
 
         context.data = {
             text,
-            userId: user!._id,
+            userId: user?._id,
             createdAt: new Date().getTime()
         };
 

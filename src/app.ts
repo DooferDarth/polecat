@@ -54,6 +54,4 @@ app.use(express.errorHandler({ logger } as any));
 
 app.hooks(appHooks);
 
-console.log(app.get('authentication'));
-
 export default app;

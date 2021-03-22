@@ -14,7 +14,6 @@ declare module './declarations' {
 class DiscordStrategy extends OAuthStrategy {
     async getEntityData(profile: OAuthProfile, existing: any, params: Params) {
         const baseData = await super.getEntityData(profile, existing, params);
-        console.log(existing);
 
         if (profile.avatar) {
             const isGif = profile.avatar.startsWith('a_');
