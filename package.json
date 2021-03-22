@@ -36,10 +36,10 @@
         "lint": "eslint src/. test/. --config .eslintrc.json --ext .ts --fix",
         "dev": "ts-node-dev --no-notify src/",
         "start": "npm run compile && node lib/",
-        "clean": "rimraf test/data/",
+        "clean": "rm -rf test/data/",
         "coverage": "nyc npm run mocha",
         "mocha": "npm run clean && cross-env NODE_ENV=test ts-mocha \"test/**/*.ts\" --recursive --exit",
-        "compile": "rimraf lib/ && tsc"
+        "compile": "rm -rf lib/ && tsc"
     },
     "standard": {
         "env": [
