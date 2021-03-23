@@ -1,14 +1,11 @@
 import assert from 'assert';
 import app from '../../src/app';
+import {remove_user, userInfo} from '../users.helper';
 
 describe('\'users\' service', () => {
-    // An example account that's not used for anything beyond testing
-    const userInfo = {
-        email: 'darthchaos2005@msn.com',
-        discordId: '823737099332616216',
-        avatar: 'https://cdn.discordapp.com/avatars/823737099332616216/3936a0db6677ea8679da89a9e4c614ca.png',
-        name: 'Len#8486'
-    };
+    beforeEach(async () => {
+        await remove_user();
+    });
 
     it('registered the service', () => {
         const service = app.service('users');
