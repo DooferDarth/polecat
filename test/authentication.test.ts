@@ -6,13 +6,16 @@ describe('authentication', () => {
         assert.ok(app.service('authentication'));
     });
 
-    describe('local strategy', () => {
+    describe('discord strategy', () => {
+        // An example account that's not used for anything beyond testing
         const userInfo = {
-            email: 'someone@example.com',
-            password: 'supersecret'
+            email: 'darthchaos2005@msn.com',
+            discordId: '823737099332616216',
+            avatar: 'https://cdn.discordapp.com/avatars/823737099332616216/3936a0db6677ea8679da89a9e4c614ca.png',
+            name: 'Len#8486'
         };
 
-        before(async () => {
+        beforeEach(async () => {
             try {
                 await app.service('users').create(userInfo);
             } catch (error) {
@@ -22,7 +25,7 @@ describe('authentication', () => {
 
         it('authenticates user and creates accessToken', async () => {
             const {user, accessToken} = await app.service('authentication').create({
-                strategy: 'local',
+                strategy: 'discord',
                 ...userInfo
             }, {});
 

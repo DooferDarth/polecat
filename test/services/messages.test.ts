@@ -2,6 +2,23 @@ import assert from 'assert';
 import app from '../../src/app';
 
 describe('\'messages\' service', () => {
+    // An example account that's not used for anything beyond testing
+    const userInfo = {
+        email: 'darthchaos2005@msn.com',
+        discordId: '823737099332616216',
+        avatar: 'https://cdn.discordapp.com/avatars/823737099332616216/3936a0db6677ea8679da89a9e4c614ca.png',
+        name: 'Len#8486'
+    };
+
+    beforeEach(async () => {
+        // Cleanup so tests are independent
+        try {
+            await app.service('users').remove(null, { query: { discordId: userInfo.discordId }});
+        } catch (error) {
+            // Do nothing
+        }
+    })
+
     it('registered the service', () => {
         const service = app.service('messages');
 
@@ -9,11 +26,7 @@ describe('\'messages\' service', () => {
     });
 
     it('creates and processes message, adds user information', async () => {
-        // Create a new user we can use for testing
-        const user = await app.service('users').create({
-            email: 'messagetest@example.com',
-            password: 'supersecret'
-        });
+        const user = await app.service('users').create(userInfo);
 
         // The messages service call params (with the user we just created)
         const params = { user };
