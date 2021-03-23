@@ -1,7 +1,12 @@
 import assert from 'assert';
 import app from '../../src/app';
+import {create_user, get_user} from '../users.helper';
 
 describe('\'messages\' service', () => {
+    beforeEach(async () => {
+        await create_user();
+    });
+
     it('registered the service', () => {
         const service = app.service('messages');
 
@@ -9,14 +14,10 @@ describe('\'messages\' service', () => {
     });
 
     it('creates and processes message, adds user information', async () => {
-        // Create a new user we can use for testing
-        const user = await app.service('users').create({
-            email: 'messagetest@example.com',
-            password: 'supersecret'
-        });
+        const user = await get_user();
 
         // The messages service call params (with the user we just created)
-        const params = { user };
+        const params = {user};
         const message = await app.service('messages').create({
             text: 'a test',
             additional: 'should be removed'
