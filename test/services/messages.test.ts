@@ -31,4 +31,18 @@ describe('\'messages\' service', () => {
         // `user` has been populated
         assert.deepStrictEqual(message.user, user);
     });
+
+    it('attempts to create a message that\'s too large', async () => {
+        const user = await get_user();
+
+        // The messages service call params (with the user we just created)
+        const params = {user};
+
+        const text = '#'.repeat(10001);
+        console.log(text.length);
+
+        await assert.rejects(app.service('messages').create({
+            text: text
+        }, params), 'Create message service failed to reject.');
+    });
 });

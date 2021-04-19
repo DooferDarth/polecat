@@ -6,11 +6,11 @@ import {
     isProvider,
     keep,
     populate,
-    preventChanges,
     required,
     setNow,
-    stashBefore
+    stashBefore, validate
 } from 'feathers-hooks-common';
+import {HookContext} from '@feathersjs/feathers';
 // Don't remove this comment. It's needed to format import lines nicely.
 
 const { authenticate } = authentication.hooks;
@@ -24,17 +24,27 @@ const userSchema = {
     }
 };
 
+function msgValidator(values: any, context: HookContext) : { [key: string]: string } | null {
+    if(values.text.length > 10000) {
+        return { 'text': 'Message too long.' };
+    }
+
+    return null;
+}
+
+
 export default {
     before: {
         all: [
             authenticate('jwt'),
             required('text'),
-            iff(context => context.params.query?.text.length > 10000, disallow()),
+            validate(msgValidator)
         ],
         find: [],
         get: [],
         create: [
-            iff(isProvider('external'), keep('text')),
+            keep('text'),
+            alterItems((msg, context) => msg.userId = context.params.user?._id),
             setNow('createdAt', 'updatedAt')
         ],
         update: [
@@ -42,13 +52,13 @@ export default {
         ],
         patch: [
             stashBefore('msg'),
-            iff(context => context.params.user?._id != context.params.msg.user?._id, disallow()),
+            iff(context => context.params.user?._id != context.params.msg.userId, disallow()),
             iff(isProvider('external'), keep('text')),
             setNow('updatedAt')
         ],
         remove: [
             stashBefore('msg'),
-            iff(context => context.params.user?._id != context.params.msg.user?._id, disallow())
+            iff(context => context.params.user?._id != context.params.msg.userId, disallow())
         ]
     },
 
