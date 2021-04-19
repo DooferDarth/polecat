@@ -1,4 +1,5 @@
 import * as feathersAuthentication from '@feathersjs/authentication';
+import {disallow} from "feathers-hooks-common";
 // Don't remove this comment. It's needed to format import lines nicely.
 
 const { authenticate } = feathersAuthentication.hooks;
@@ -9,9 +10,9 @@ export default {
         find: [ authenticate('jwt') ],
         get: [ authenticate('jwt') ],
         create: [],
-        update: [ authenticate('jwt') ],
+        update: [ authenticate('jwt'), disallow('external') ],
         patch: [ authenticate('jwt') ],
-        remove: [ authenticate('jwt') ]
+        remove: [ authenticate('jwt'), disallow('external') ]
     },
 
     after: {
